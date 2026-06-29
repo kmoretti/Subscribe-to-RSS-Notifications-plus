@@ -60,11 +60,21 @@ def get_subscribers_from_issues():
         'Accept': 'application/vnd.github.v3+json'
     }
     response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        print(f"获取 issues 失败: {response.status_code} - {response.text}")
+        return []
+
     issues = json.loads(response.text)
+    if not isinstance(issues, list):
+        print(f"GitHub API 返回格式异常: {response.text}")
+        return []
 
     subscribers = []
     for issue in issues:
-        if issue['title'].lower().startswith('订阅 rss 更新通知'):
+        if not isinstance(issue, dict):
+            continue
+        title = issue.get('title', '')
+        if title.lower().startswith('订阅 rss 更新通知'):
             body = issue['body']
             email_match = re.search(r'邮箱地址:\s*(.+@.+\..+)', body)
             if email_match:
