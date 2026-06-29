@@ -1,1 +1,1 @@
-https://rss-beauty.081531.xyz/rss?url=https%3A%2F%2Fblog.081531.xyz%2Frss.xml
+https://blog.081531.xyz/rss.xml
